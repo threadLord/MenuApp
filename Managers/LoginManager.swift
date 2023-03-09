@@ -26,6 +26,8 @@ class LoginManager: LoginManagerProtocol {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("mobile-application", forHTTPHeaderField: "application")
+        request.setValue("123456", forHTTPHeaderField: "Device-UUID")
+        request.setValue("3.7.0", forHTTPHeaderField: "Api-Version")
         
         // prepare json data
         let json: [String: Any] = ["email": email,
