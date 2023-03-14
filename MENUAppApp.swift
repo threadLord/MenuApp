@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct MENUAppApp: App {
+    init() {
+        Resolver.shared.buildCont()
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()

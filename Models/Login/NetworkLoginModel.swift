@@ -60,7 +60,7 @@ struct CustomerAccount: Codable {
 }
 
 // MARK: - Token
-struct Token: Codable {
+struct Token: Codable, Equatable {
     let value: String?
     let ttl, refreshTTL: Int?
 
@@ -68,6 +68,12 @@ struct Token: Codable {
         case value, ttl
         case refreshTTL = "refresh_ttl"
     }
+    static func == (lhs: Token, rhs: Token) -> Bool {
+            return
+                lhs.value == rhs.value &&
+                lhs.ttl == rhs.ttl &&
+                lhs.refreshTTL == rhs.refreshTTL
+        }
 }
 
 // MARK: - Encode/decode helpers

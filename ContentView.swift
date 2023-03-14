@@ -7,21 +7,25 @@
 
 import SwiftUI
 
+enum Screen {
+    case login
+    case menu
+    case submenu
+}
+
 struct ContentView: View {
-    var login = LoginManager()
-    let email = "test@testmenu.app"
-    let password = "test1234"
-    var viewModel = LoginViewModel()
+    @State var coordinator: Screen = .menu
     
     var body: some View {
-        Text("Hello, world!")
-            .padding().onAppear {
-                login.login(email: email, password: password).sink { error in
-                    print("Data: \(error)")
-                } receiveValue: { data in
-                    print("Data: \(data)")
-                }.store(in: &viewModel.subscriptions)
-            }
+        
+        switch coordinator {
+        case .login:
+            LoginView()
+        case .menu:
+            MenuView()
+        case .submenu:
+            MenuView()
+        }
     }
 }
 

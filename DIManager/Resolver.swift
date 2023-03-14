@@ -23,16 +23,57 @@ class Resolver {
     static let shared = Resolver()
     
     //get the IOC container
-    private lazy var container = buildContainer()
+    private var container = Container()
     
     func resolve<T>(_ type: T.Type) -> T {
         container.resolve(T.self)!
     }
     
-    func buildContainer() -> Container {
+    func resolve<T>(_ type: T.Type, name: String) -> T {
+        container.resolve(T.self, name: name)!
+    }
+    
+//    func buildContainer() -> Container {
+//        container.register(LoginManagerProtocol.self) { resolver in
+//            return LoginManager()
+//        }.inObjectScope(.container)
+//
+//        container.register(KeychainWrapperProtocol.self) { resolver in
+//            return KeychainWrapper()
+//        }
+//        return container
+//    }
+    
+    func buildCont() {
         container.register(LoginManagerProtocol.self) { resolver in
             return LoginManager()
         }.inObjectScope(.container)
-        return container
+        
+        container.register(LoginViewModel.self) { resolver in
+            let loginViewModel = LoginViewModel()
+            return loginViewModel
+        }
+        
+        container.register(KeychainWrapperProtocol.self) { resolver in
+            return KeychainWrapper()
+        }.inObjectScope(.container)
+        
+        container.register(MenuManagerProtocol.self) { resolver in
+            return MenuManager()
+        }.inObjectScope(.container)
+        
+        container.register(NetworkManagerProtocol.self, name: ResolverConstants.authenticatedNetworkProtocol) { resolver in
+            return NetworkManagerAuthenticated()
+        }.inObjectScope(.container)
+        
+        container.register(NetworkManagerProtocol.self, name: ResolverConstants.networkManagerUnauthenticated) { resolver in
+            return NetworkManagerUnauthenticated()
+        }.inObjectScope(.container)
     }
+}
+
+
+struct ResolverConstants {
+    static let authenticatedNetworkProtocol = "AuthenticatedNetworkProtocol"
+    static let networkManagerUnauthenticated = "NetworkManagerProtocol"
 }
