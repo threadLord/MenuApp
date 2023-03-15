@@ -23,7 +23,10 @@ struct MenuData: Codable {
 }
 
 // MARK: - VenueElement
-struct VenueElement: Codable, Identifiable {
+struct VenueElement: Codable, Identifiable, Equatable {
+    static func == (lhs: VenueElement, rhs: VenueElement) -> Bool {
+        lhs.id == rhs.id
+    }
     
     var id: Int {
         return venue?.id ?? UUID().hashValue

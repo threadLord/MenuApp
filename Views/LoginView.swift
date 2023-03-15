@@ -25,7 +25,7 @@ struct LoginView: View {
         VStack(spacing: 20) {
             VStack(spacing: 8) {
                 Spacer()///.frame(height: 20)
-        
+//        
 //                Image("logo")
 //                    .resizable()
 //                    .frame(width: 100, height: 100)
@@ -76,15 +76,22 @@ struct LoginView: View {
             .padding(.horizontal)
             Spacer()
             
+            Button("Login") {
+                viewModel.loginWithData.send((email1,password1))
+            }.foregroundColor(Color.black)
+                .buttonStyle(.bordered)
+                .tint(.pink)
+            
             Button(action: {
                 viewModel.loginWithData.send((email,password))
             }) {
+                
 //                Image("loginButton")
 //                    .resizable()
 //                    .frame(maxWidth: .infinity)
 //                    .frame(height: 56)
 //                    .cornerRadius(5)
-            }
+            }.foregroundColor(Color.red)
 //            .padding(.horizontal)
             
             Spacer()

@@ -46,12 +46,6 @@ class LoginManager: LoginManagerProtocol {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         request.httpBody = jsonData
         
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap({ data, resposne in
-                return data
-            })
-            .decode(type: NetwrokLogin.self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
+        return networkManager.getData(urlRequest: request, type: NetwrokLogin.self)
     }
-    
 }

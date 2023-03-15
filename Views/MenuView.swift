@@ -42,6 +42,14 @@ struct CustomListView: View {
                            location: item.venue?.address ?? "Location",
                            workTime: "Work time")
         }
+//        .onChange(of: viewModel.menuData) { newValue in
+//            if !newValue.isEmpty {
+//                print("Remove spinner")
+//            } else {
+//                print("Show spinner")
+//            }
+//        }
+        
     }
 }
 

@@ -42,10 +42,10 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
     func subscribe() {
         loginWithData
             .flatMap { [weak self] email, password -> AnyPublisher<LoginData?, Never> in
-            
                 return self?.loginManager
                     .login(email: email, password: password)
                     .tryMap { $0.data }
+                    
                     .catch { [weak self] error -> AnyPublisher<LoginData?, Never> in
                           self?.error = error
                         return Just(nil)
@@ -54,6 +54,8 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
                     .eraseToAnyPublisher() ?? Just(nil).eraseToAnyPublisher()
             }
             .replaceError(with: nil)
+            .print("MARKO: Debug login")
+            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
             .assign(to: &$user)
         

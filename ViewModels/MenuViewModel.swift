@@ -14,24 +14,21 @@ final class MenuViewModel: ObservableObject {
     @Published
     var error: Error?
     
-    var latAndLong = PassthroughSubject<(Double, Double), Error>()
-    
+    var latAndLong = PassthroughSubject<LatAndLong, Error>()
     
     @Published
-    var menuData: [VenueElement] = [] {
-        didSet {
-            print("Menu data: \(menuData)")
-        }
-    }
+    var menuData: [VenueElement] = []
     
+    var cancel = Set<AnyCancellable>()
     
-    let lat = "44.001783"
-    let long = "21.26907"
+    let lat = 44.001783
+    let long = 21.26907
     
     init() {
         subscribe()
+        latAndLong.send((lat, long))
     }
-    
+
     func subscribe() {
         latAndLong
             .flatMap (fetchMenuData)
@@ -40,9 +37,9 @@ final class MenuViewModel: ObservableObject {
             .eraseToAnyPublisher()
             .assign(to: &$menuData)
     }
-    
+
     typealias LatAndLong = (Double, Double)
-    
+
     func fetchMenuData(_ latAndLong: LatAndLong) -> AnyPublisher<MenuData?, Never> {
         let latitude = latAndLong.0
         let longitude = latAndLong.1
