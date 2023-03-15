@@ -14,23 +14,20 @@ enum Screen {
 }
 
 struct ContentView: View {
-    @State var coordinator: Screen = .menu
+    
+    @State
+    var coordinator: Screen = Resolver.shared.resolve(KeychainWrapperProtocol.self).token != nil ? .menu : .login
     
     var body: some View {
         
         switch coordinator {
         case .login:
-            LoginView()
+            LoginView(screenState: $coordinator)
         case .menu:
-            MenuView()
+            MenuView(screenState: $coordinator)
         case .submenu:
-            MenuView()
+            MenuView(screenState: $coordinator)
+//            ResturantView(screenState: $coordinator)
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

@@ -10,6 +10,9 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
+    @Binding var screenState: Screen
+    @State private var showAlert = false
+    
     
     let email1 = "test@testmenu.app"
     let password1 = "test1234"
@@ -26,9 +29,9 @@ struct LoginView: View {
             VStack(spacing: 8) {
                 Spacer()///.frame(height: 20)
 //        
-//                Image("logo")
-//                    .resizable()
-//                    .frame(width: 100, height: 100)
+                Image("logo")
+                    .resizable()
+                    .frame(width: 100, height: 100)
                 Spacer().frame(height: 86.5)
                 VStack(spacing: 4) {
                     Text("The easiest way to order")
@@ -61,10 +64,7 @@ struct LoginView: View {
                     .padding(.vertical, 12)
                     .padding(.horizontal, 16)
                     .background(Color.white)
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 5)
-//                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-//                    )
+
                     .cornerRadius(5)
                
                 Divider()
@@ -76,30 +76,40 @@ struct LoginView: View {
             .padding(.horizontal)
             Spacer()
             
-            Button("Login") {
-                viewModel.loginWithData.send((email1,password1))
-            }.foregroundColor(Color.black)
-                .buttonStyle(.bordered)
-                .tint(.pink)
-            
-            Button(action: {
+            Button {
                 viewModel.loginWithData.send((email,password))
-            }) {
-                
-//                Image("loginButton")
-//                    .resizable()
-//                    .frame(maxWidth: .infinity)
-//                    .frame(height: 56)
-//                    .cornerRadius(5)
-            }.foregroundColor(Color.red)
-//            .padding(.horizontal)
+            } label: {
+                Text("Sign in")
+                    .frame(width: geometry.size.width - 24 * 2 , height: 56)
+                    .font(Font(CTFont(.pushButton, size: 20)).bold())
+//                    .foregroundColor(Color.white)
+                    
+            }
             
+//            .foregroundColor(Color.black)
+                .buttonStyle(.borderedProminent)
+                .tint(Color(uiColor: UIColor(red: 242/256, green: 97/256, blue: 61/256, alpha: 1)))
+
             Spacer()
                 .frame(height: 20)
         }
         .padding()
         .background(Color.white)
         .padding(.bottom)
+        }
+        .onReceive(viewModel.$isLoggedIn) { user in
+            if user == true {
+                screenState = .menu
+            }
+        }
+        .onReceive(viewModel.$error, perform: { error in
+            guard let error = error else {
+                return
+            }
+            showAlert = true
+        })
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text("Check your Email or password"), dismissButton: .default(Text("OK")))
         }
     }
 }

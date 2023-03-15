@@ -65,7 +65,7 @@ struct VenueVenue: Codable {
     let tipDefault, tipMax, serviceCharge, pickupTime: Int?
     let isPickupOnOpenAllowed: Bool?
     let calculationMethod: String?
-    let image: Image?
+    let image: ImageCodable?
     let availablePaymentMethods: [AvailablePaymentMethod]?
     let country: Country?
     let currency: Currency?
@@ -327,7 +327,7 @@ struct Currency: Codable {
 }
 
 // MARK: - Image
-struct Image: Codable {
+struct ImageCodable: Codable {
     let thumbnailSmall, thumbnailMedium, fullsize: String?
 
     enum CodingKeys: String, CodingKey {

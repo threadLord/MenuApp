@@ -14,9 +14,8 @@ struct MENUAppApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            LoginView()
-//            MenuView()
-//            ContentView()
+//            ResturantView()
+            ContentView()
         }
     }
 }

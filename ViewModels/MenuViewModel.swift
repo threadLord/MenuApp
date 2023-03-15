@@ -17,7 +17,7 @@ final class MenuViewModel: ObservableObject {
     var latAndLong = PassthroughSubject<LatAndLong, Error>()
     
     @Published
-    var menuData: [VenueElement] = []
+    var menuData: [RestaurantData] = []
     
     var cancel = Set<AnyCancellable>()
     
@@ -34,6 +34,10 @@ final class MenuViewModel: ObservableObject {
             .flatMap (fetchMenuData)
             .replaceError(with: nil)
             .map({ $0?.venues ?? [] })
+            .map({ $0.map { venueElement in
+                return RestaurantData(venue: venueElement)
+            }
+            })
             .eraseToAnyPublisher()
             .assign(to: &$menuData)
     }
@@ -53,5 +57,9 @@ final class MenuViewModel: ObservableObject {
             }
             .map({ $0.data })
             .eraseToAnyPublisher()
+    }
+    
+    func isUserLoggedIn() -> Bool {
+        return Resolver.shared.resolve(KeychainWrapperProtocol.self).token != nil
     }
 }

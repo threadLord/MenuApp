@@ -31,6 +31,9 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
     @Published
     var error: Error?
     
+    @Published
+    var isLoggedIn: Bool = false
+    
     var subscriptions = Set<AnyCancellable>()
     
     var loginWithData = PassthroughSubject<(String, String), Error>()
@@ -60,20 +63,23 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
             .assign(to: &$user)
         
         $user
+            .dropFirst()
             .sink {[ self] data in
                 guard
                     let token = data?.token
                 else {
+                    self.error = NetworkError.noToken
                     return
                 }
             
                 self.keychainWrapper.token = token
-        }
-
-    }
-    
-    func login(email: String, password: String) {
-        
+                
+                
+                if let _ = self.keychainWrapper.token?.value {
+                    isLoggedIn = true
+                }
+            }
+            .store(in: &subscriptions)
     }
     
 }

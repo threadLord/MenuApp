@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct CustomCellView: View {
     let title: String
     let distance: String
@@ -34,31 +32,45 @@ struct CustomCellView: View {
 
 struct CustomListView: View {
     @ObservedObject var viewModel: MenuViewModel
+    @Binding var screenState: Screen
     
     var body: some View {
-        List(viewModel.menuData, id: \.id) { item in
-            CustomCellView(title: item.venue?.name ?? "No name",
-                           distance: "\(item.distance)" ?? "",
-                           location: item.venue?.address ?? "Location",
-                           workTime: "Work time")
+        MenuNavigation {
+            List(viewModel.menuData, id: \.id) { item in
+                NavigationLink {
+                    ResturantView(screenState: $screenState, data: item)
+                } label: {
+                    
+                    
+                        CustomCellView(title: item.title ,
+                                       distance: item.distance,
+                                       location: item.address,
+                                       workTime: item.servingTimes)
+                }
+            }
         }
-//        .onChange(of: viewModel.menuData) { newValue in
-//            if !newValue.isEmpty {
-//                print("Remove spinner")
-//            } else {
-//                print("Show spinner")
-//            }
-//        }
         
     }
 }
 
-
-
 struct MenuView: View {
     @StateObject var viewModel = MenuViewModel()
+    @Binding var screenState: Screen
     
     var body: some View {
-        CustomListView(viewModel: viewModel)
+        CustomListView(viewModel: viewModel, screenState: $screenState)
+    }
+}
+
+
+struct MenuNavigation<Content>: View where Content: View {
+    @ViewBuilder var content: () -> Content
+    
+    var body: some View {
+        if #available(iOS 16, *) {
+            NavigationStack(root: content)
+        } else {
+            NavigationView(content: content)
+        }
     }
 }

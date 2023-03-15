@@ -16,16 +16,16 @@ class NetworkManagerAuthenticated: NetworkManagerProtocol {
     
     var token: String? = {
         let keychainWrapper = Resolver.shared.resolve(KeychainWrapperProtocol.self)
-//        return keychainWrapper.token?.value
-        return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS1xYS5tZW51LmFwcC9hcGkvY3VzdG9tZXJzL2xvZ2luIiwiaWF0IjoxNjc4NDYxNzQ3LCJleHAiOjE2Nzg0NjUzNDcsIm5iZiI6MTY3ODQ2MTc0NywianRpIjoiSmtBcVBvdWVCdTJpeHFvQSIsInN1YiI6IjkyNjE5MyIsInBydiI6ImNjMzI5MjFhMTU0ODBhMTE3ZDliYmM3MmMwZTEyNTZhNjg1MjQ1OGIiLCJhcHBsaWNhdGlvbl9pZCI6Mywic2Vzc2lvbl9pZCI6NzgyODg1fQ.QsZbWNBIEuN0_7dAZ_Tf5HFLeuZQggq5x9Xl1Eeo9Xw"
+        return keychainWrapper.token?.value
     }()
     
     func getData<T: Codable>(urlRequest: URLRequest, type: T.Type) -> AnyPublisher<T, Error> {
-        guard let token = token else {
-            return Just<T>(NSObject() as! T)
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
+//        guard let token = token else {
+//            return Just<T>(NSObject() as! T)
+//                .setFailureType(to: Error.self)
+//                .eraseToAnyPublisher()
+//        }
+        let token = token ?? ""
         
         var request = urlRequest
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
