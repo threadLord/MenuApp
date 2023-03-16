@@ -11,10 +11,14 @@ import SwiftUI
 struct MENUAppApp: App {
     init() {
         Resolver.shared.buildCont()
+        UITableView.appearance().backgroundColor = .white
+        UITableViewCell.appearance().backgroundColor = .white
+        UICollectionView.appearance().backgroundColor = .white
+        UICollectionViewCell.appearance().backgroundColor = .white
+        UIScrollView.appearance().backgroundColor = .white
     }
     var body: some Scene {
         WindowGroup {
-//            ResturantView()
             ContentView()
         }
     }

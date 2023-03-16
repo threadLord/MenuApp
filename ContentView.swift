@@ -23,11 +23,10 @@ struct ContentView: View {
         switch coordinator {
         case .login:
             LoginView(screenState: $coordinator)
-        case .menu:
+                
+        default:
             MenuView(screenState: $coordinator)
-        case .submenu:
-            MenuView(screenState: $coordinator)
-//            ResturantView(screenState: $coordinator)
+                .background(Color.white)
         }
     }
 }

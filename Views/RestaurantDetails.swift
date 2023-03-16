@@ -21,10 +21,8 @@ struct ResturantView: View {
             
             ZStack {
                 VStack(alignment: .leading) {
-                    Image("hero_image")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity, maxHeight: geometry.size.height / 3 * 2)
+                    ImageView(imageUrlString: data.image)
+                        .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height / 3 * 2)
                     
                     LowerView(data: data)
                         .padding()
@@ -32,7 +30,7 @@ struct ResturantView: View {
                         .frame(width:  UIScreen.main.bounds.width)
                 }
                 VStack(alignment:.trailing) {
-                    
+                    Spacer().frame(height: 16)
                     HStack {
                         Spacer()
                         Button {
@@ -48,8 +46,7 @@ struct ResturantView: View {
                 }
 
             }
-            
-        }
+        }.background(Color.white)
     }
 }
 
@@ -60,6 +57,7 @@ struct LowerView: View {
             Text(data.title)
                 .font(Font(CTFont(.menuTitle, size: 22)))
                 .fontWeight(.bold)
+                .foregroundColor(Color.black)
             
             if !data.welcomeMessage.isEmpty {
                 Text(data.welcomeMessage)
@@ -70,9 +68,11 @@ struct LowerView: View {
             Text(data.description)
                 .font(Font(CTFont(.menuTitle, size: 14)))
                 .lineLimit(2)
+                .foregroundColor(.gray)
 
             Text(data.servingTimes)
                 .font(.caption)
+                .foregroundColor(.gray)
           
         }
         .background(Color.white)

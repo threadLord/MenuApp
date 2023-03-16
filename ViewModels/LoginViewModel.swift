@@ -10,7 +10,6 @@ import Foundation
 
 
 protocol LoginViewModelProtocol  {
-//    var loginManager: LoginManagerProtocol { get }
     var user: LoginData? { get set }
     var loginWithData: PassthroughSubject<(String, String), Error> { get }
 }
@@ -22,7 +21,6 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
     @Inject
     internal var loginManager: LoginManagerProtocol
     
-//    @Inject
     private var keychainWrapper = KeychainWrapper()
     
     @Published
@@ -57,7 +55,6 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
                     .eraseToAnyPublisher() ?? Just(nil).eraseToAnyPublisher()
             }
             .replaceError(with: nil)
-            .print("MARKO: Debug login")
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
             .assign(to: &$user)
@@ -81,5 +78,4 @@ class LoginViewModel: ObservableObject, LoginViewModelProtocol {
             }
             .store(in: &subscriptions)
     }
-    
 }

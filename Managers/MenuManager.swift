@@ -20,11 +20,6 @@ class NetworkManagerAuthenticated: NetworkManagerProtocol {
     }()
     
     func getData<T: Codable>(urlRequest: URLRequest, type: T.Type) -> AnyPublisher<T, Error> {
-//        guard let token = token else {
-//            return Just<T>(NSObject() as! T)
-//                .setFailureType(to: Error.self)
-//                .eraseToAnyPublisher()
-//        }
         let token = token ?? ""
         
         var request = urlRequest
@@ -55,7 +50,6 @@ class MenuManager: MenuManagerProtocol {
         let url = URL(string: url)!
         var request = URLRequest.menuRequest(url: url)
                 
-        // prepare json data
         let json: [String: Any] = ["latitude": latitude,
                                    "longitude": longitude]
         let jsonData = try? JSONSerialization.data(withJSONObject: json)

@@ -14,7 +14,6 @@ import Combine
 struct Inject<I> {
     let wrappedValue: I
     init() {
-        //Resolve the interface to an implementation.
         self.wrappedValue = Resolver.shared.resolve(I.self)
     }
 }
@@ -22,7 +21,6 @@ struct Inject<I> {
 class Resolver {
     static let shared = Resolver()
     
-    //get the IOC container
     private var container = Container()
     
     func resolve<T>(_ type: T.Type) -> T {
@@ -32,17 +30,6 @@ class Resolver {
     func resolve<T>(_ type: T.Type, name: String) -> T {
         container.resolve(T.self, name: name)!
     }
-    
-//    func buildContainer() -> Container {
-//        container.register(LoginManagerProtocol.self) { resolver in
-//            return LoginManager()
-//        }.inObjectScope(.container)
-//
-//        container.register(KeychainWrapperProtocol.self) { resolver in
-//            return KeychainWrapper()
-//        }
-//        return container
-//    }
     
     func buildCont() {
         container.register(LoginManagerProtocol.self) { resolver in

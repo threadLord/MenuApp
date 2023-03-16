@@ -13,6 +13,5 @@ class RestaurantViewViewModel: ObservableObject {
     
     func logout() {
         keychainWrapper.token = nil
-        
     }
 }

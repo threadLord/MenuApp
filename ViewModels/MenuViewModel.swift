@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 final class MenuViewModel: ObservableObject {
     
@@ -38,6 +39,7 @@ final class MenuViewModel: ObservableObject {
                 return RestaurantData(venue: venueElement)
             }
             })
+            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
             .assign(to: &$menuData)
     }

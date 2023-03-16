@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct LoginView: View {
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @Binding var screenState: Screen
     @State private var showAlert = false
-    
-    
-    let email1 = "test@testmenu.app"
-    let password1 = "test1234"
-    
     
     @ObservedObject
     var viewModel: LoginViewModel = Resolver.shared.resolve(LoginViewModel.self)
@@ -27,8 +23,7 @@ struct LoginView: View {
         
         VStack(spacing: 20) {
             VStack(spacing: 8) {
-                Spacer()///.frame(height: 20)
-//        
+                Spacer()
                 Image("logo")
                     .resizable()
                     .frame(width: 100, height: 100)
@@ -44,14 +39,14 @@ struct LoginView: View {
             }
             Spacer().frame(height: 20)
             VStack(spacing: 16) {
-                TextField("Email", text: $email)
+                TextField("", text: $email)
+                    .placeholder(when: email.isEmpty, placeholder: {
+                        Text("Email").foregroundColor(.gray)
+                    })
                     .padding(.vertical, 12)
                     .padding(.horizontal, 16)
+                    .foregroundColor(Color.black)
                     .background(Color.white)
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 5)
-//                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-//                    )
                     .cornerRadius(5)
                 
                 Divider()
@@ -60,11 +55,14 @@ struct LoginView: View {
                  .background(Color.gray.opacity(0.5))
                  .offset(x: 0, y: -10)
                 
-                SecureField("Password", text: $password)
+                SecureField("", text: $password)
+                    .placeholder(when: email.isEmpty, placeholder: {
+                        Text("Password").foregroundColor(.gray)
+                    })
                     .padding(.vertical, 12)
                     .padding(.horizontal, 16)
                     .background(Color.white)
-
+                    .foregroundColor(Color.black)
                     .cornerRadius(5)
                
                 Divider()
@@ -82,13 +80,9 @@ struct LoginView: View {
                 Text("Sign in")
                     .frame(width: geometry.size.width - 24 * 2 , height: 56)
                     .font(Font(CTFont(.pushButton, size: 20)).bold())
-//                    .foregroundColor(Color.white)
-                    
             }
-            
-//            .foregroundColor(Color.black)
-                .buttonStyle(.borderedProminent)
-                .tint(Color(uiColor: UIColor(red: 242/256, green: 97/256, blue: 61/256, alpha: 1)))
+            .buttonStyle(.borderedProminent)
+            .tint(Color(uiColor: UIColor(red: 242/256, green: 97/256, blue: 61/256, alpha: 1)))
 
             Spacer()
                 .frame(height: 20)
@@ -103,7 +97,7 @@ struct LoginView: View {
             }
         }
         .onReceive(viewModel.$error, perform: { error in
-            guard let error = error else {
+            guard error != nil else {
                 return
             }
             showAlert = true
